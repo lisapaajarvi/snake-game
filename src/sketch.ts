@@ -12,7 +12,8 @@ let xCor : number[]= [];
 let yCor : number[]= [];
 let scoreElement : any;
 
-//function preload() {}
+let xFruit : number;
+let yFruit : number;
 
 function setup() {
     scoreElement = createDiv('Score = 0');
@@ -24,7 +25,8 @@ function setup() {
     stroke(255);
     strokeWeight(10);
     noCursor();
-    
+    updateFruitCoordinates();
+
     for (let i = 0; i < numSegments; i++) {
         xCor.push(xStart + i * diff);
         yCor.push(yStart);
@@ -38,6 +40,7 @@ function draw() {
         line(xCor[i], yCor[i], xCor[i + 1], yCor[i + 1]);
         }
         updateSnakeCoordinates();
+        checkForFruit();
         checkGameStatus();
 
     // game.update();
@@ -81,7 +84,7 @@ function updateSnakeCoordinates() {
     ) {
       noLoop();
       const scoreVal = parseInt(scoreElement.html().substring(8));
-      scoreElement.html('Game ended! Your score was : ' + scoreVal);
+      scoreElement.html('Game over! Your score was : ' + scoreVal);
     }
   }
   
@@ -91,10 +94,37 @@ function updateSnakeCoordinates() {
     const snakeHeadX = xCor[xCor.length - 1];
     const snakeHeadY = yCor[yCor.length - 1];
     for (let i = 0; i < xCor.length - 1; i++) {
-      if (xCor[i] === snakeHeadX && yCor[i] === snakeHeadY) {
-        return true;
-      }
+        if (xCor[i] === snakeHeadX && yCor[i] === snakeHeadY) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
+  }
+
+
+function checkForFruit() {
+    point(xFruit, yFruit);
+    if (xCor[xCor.length - 1] === xFruit && yCor[yCor.length - 1] === yFruit) {
+      const prevScore = parseInt(scoreElement.html().substring(8));
+      scoreElement.html('Score = ' + (prevScore + 1));
+      xCor.unshift(xCor[0]);
+      yCor.unshift(yCor[0]);
+      numSegments++;
+      updateFruitCoordinates();
+    }
+  }
+  
+  function updateFruitCoordinates() {
+    /*
+      The complex math logic is because I wanted the point to lie
+      in between 100 and width-100, and be rounded off to the nearest
+      number divisible by 10, since I move the snake in multiples of 10.
+    */
+  
+    xFruit = floor(random(10, (width - 100) / 10)) * 10;
+    yFruit = floor(random(10, (height - 100) / 10)) * 10;
   }
 
   function keyPressed() {
