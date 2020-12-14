@@ -16,7 +16,7 @@ let xFruit : number;
 let yFruit : number;
 
 function setup() {
-    scoreElement = createDiv('Score = 0');
+    scoreElement = createDiv('Score: 0');
     scoreElement.position(20, 20);
     scoreElement.id = 'score';
     scoreElement.style('color', 'white');
@@ -36,7 +36,9 @@ function setup() {
 
 function draw() {
     background('aqua');
+        stroke('white')
         for (let i = 0; i < numSegments - 1; i++) {
+        
         line(xCor[i], yCor[i], xCor[i + 1], yCor[i + 1]);
         }
         updateSnakeCoordinates();
@@ -97,18 +99,17 @@ function updateSnakeCoordinates() {
         if (xCor[i] === snakeHeadX && yCor[i] === snakeHeadY) {
             return true;
         }
-        else {
-            return false;
-        }
     }
+    return false;
   }
 
 
 function checkForFruit() {
+    stroke('red');
     point(xFruit, yFruit);
     if (xCor[xCor.length - 1] === xFruit && yCor[yCor.length - 1] === yFruit) {
       const prevScore = parseInt(scoreElement.html().substring(8));
-      scoreElement.html('Score = ' + (prevScore + 1));
+      scoreElement.html('Score : ' + (prevScore + 1));
       xCor.unshift(xCor[0]);
       yCor.unshift(yCor[0]);
       numSegments++;
