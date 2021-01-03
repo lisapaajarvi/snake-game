@@ -12,11 +12,13 @@ let xCor : number[]= [];
 let yCor : number[]= [];
 let scoreElement : any;
 
+let scoreValue = 0;
+
 let xFruit : number;
 let yFruit : number;
 
 function setup() {
-    scoreElement = createDiv('Score: 0');
+    scoreElement = createDiv('Score: ' + scoreValue);
     scoreElement.position(20, 20);
     scoreElement.id = 'score';
     scoreElement.style('color', 'white');
@@ -85,8 +87,7 @@ function updateSnakeCoordinates() {
       checkSnakeCollision()
     ) {
       noLoop();
-      const scoreVal = parseInt(scoreElement.html().substring(8));
-      scoreElement.html('Game over! Your score was : ' + scoreVal);
+      scoreElement.html('Game over! Your score was : ' + scoreValue);
     }
   }
   
@@ -108,8 +109,8 @@ function checkForFruit() {
     stroke('red');
     point(xFruit, yFruit);
     if (xCor[xCor.length - 1] === xFruit && yCor[yCor.length - 1] === yFruit) {
-      const prevScore = parseInt(scoreElement.html().substring(8));
-      scoreElement.html('Score : ' + (prevScore + 1));
+      scoreValue ++;
+      scoreElement.html('Score : ' + scoreValue);
       xCor.unshift(xCor[0]);
       yCor.unshift(yCor[0]);
       numSegments++;
